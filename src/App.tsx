@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Card } from './Components'
+import { CardList } from './Components'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <Card/>
+        <CardList/>
       </div>
     </>
   )
