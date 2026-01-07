@@ -1,22 +1,26 @@
 import { useState, type ChangeEvent, type SyntheticEvent } from 'react'
 import './App.css'
-import { CardList, Search } from './Components'
+import { CardList, Search, ListPortfolio } from './Components'
 import type { CompanySearch } from '../company'
 import { searchCompanies } from '../api'
 
 function App() {
   const [search, setSearch] = useState<string>('')
+  const [portfolioValues, setPortfolioValues] = useState<string[]>([])
   const [searchResult, setsearchResult] = useState<CompanySearch[]>([])
   const [serverError, setServerError] = useState<string>('')
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.target.value)
-      console.log(e)
+    setSearch(e.target.value)
+    console.log(e)
   }
 
-  const onPortfolioCreate = (e: SyntheticEvent) => {
+  const onPortfolioCreate = (e: any) => {
     e.preventDefault()
-    console.log(e)
+    const exist = portfolioValues.find((value) => value === e.target[0].value)
+    if (exist) return
+    const updatedPortfolio = [...portfolioValues, e.target[0].value]
+    setPortfolioValues(updatedPortfolio)
   }
 
   const onSearchSubmit = async (e: SyntheticEvent) => {
@@ -24,7 +28,7 @@ function App() {
     const result = await searchCompanies(search)
     if (typeof result === 'string') {
       setServerError(result)
-    } else if(Array.isArray(result.data)) {
+    } else if (Array.isArray(result.data)) {
       setsearchResult(result.data)
     }
     console.log(searchResult)
@@ -33,9 +37,16 @@ function App() {
   return (
     <>
       <div className="App">
-        <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange} />
-        { serverError && <h1>{serverError}</h1> }
-        <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate} />
+        <Search
+          onSearchSubmit={onSearchSubmit}
+          search={search}
+          handleSearchChange={handleSearchChange}
+        />
+        <ListPortfolio portfolioValues={portfolioValues} />
+        <CardList
+          searchResults={searchResult}
+          onPortfolioCreate={onPortfolioCreate}
+        />
       </div>
     </>
   )
