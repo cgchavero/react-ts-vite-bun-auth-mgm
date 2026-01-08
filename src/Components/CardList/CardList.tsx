@@ -8,7 +8,7 @@ interface Props {
   onPortfolioCreate: (e: SyntheticEvent) => void
 }
 
-const CardList : React.FC<Props> = ({searchResults, onPortfolioCreate}: Props) : JSX.Element => {
+const CardList: React.FC<Props> = ({ searchResults, onPortfolioCreate }: Props): JSX.Element => {
   return (
     <div>
       {searchResults.length > 0 ? (
@@ -22,8 +22,10 @@ const CardList : React.FC<Props> = ({searchResults, onPortfolioCreate}: Props) :
             />
           )
         })
-      ): (
-        <h1>No results</h1>
+      ) : (
+        <p className="mb-3 mt-3 text-xl font-semibold text-center md:text-xl">
+          No results!
+        </p>
       )}
     </div>
   )
